@@ -1,0 +1,60 @@
+<router-outlet></router-outlet>
+
+<main>
+
+  <button class="track-button" (click)="track()">
+    TRACK
+  </button>
+
+  <div class="inputs">
+    <div class="time-inputs">
+      <input type="time" [ngModel]="start | date:'HH:mm'"
+             (ngModelChange)="start = dateFromTime($event)"
+      > <!-- todo make a time input component of this -->
+
+      <input type="time" [ngModel]="end | date:'HH:mm'"
+             (ngModelChange)="end = dateFromTime($event)"
+      >
+    </div>
+
+    <div class="input-and-label">
+      <label>Projekt:</label>
+      <mat-select [(ngModel)]="project">
+        <mat-option *ngFor="let project of projects" [value]="project">
+          {{project}}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <div class="input-and-label">
+      <label>Kommentar:</label>
+      <textarea [(ngModel)]="comment" rows="5">
+      </textarea>
+    </div>
+  </div>
+
+</main>
+
+<div>
+  <div *ngFor="let track of trackedTimes" class="trackedTimes">
+    <span>{{track.start | date:"dd.MM.yy-HH:mm:ss"}}</span>
+    <span>{{track.end | date:"dd.MM.yy-HH:mm:ss"}}</span>
+    <span>{{track.project}}</span>
+    <span>{{track.comment}}</span>
+    <span>Zeit: {{getTimeBetween(track.start, track.end)}}</span>
+  </div>
+</div>
+
+
+<div>
+  <h4>Pomodoro Mode</h4>
+  <button (click)="startPomodoro()" [disabled]="isStarted">Start</button>
+
+  <div>
+    <h6>
+      <a href="obsidian://open?vault=Obsidian&file=Life%20OS%2F%C3%9Cbungen%20zusammenschreiben%20und%20Routine%20aufbauen">
+        Übungen
+      </a>
+    </h6>
+  </div>
+</div>

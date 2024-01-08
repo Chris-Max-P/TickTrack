@@ -1,0 +1,23 @@
+{
+  "name": "ticktrack-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build-ng-prod": "cd app && npm run build-prod",
+    "ng-dev": "cd app && npm run start",
+    "dev": "concurrently \"npm run ng-dev\" \"npm run electron\"",
+    "create-distributable-prod": "npm run build-ng-prod && npm run make"
+  },
+  "author": "C.Paul",
+  "license": "ISC",
+  "dependencies": {
+    "electron-log": "^4.4.8"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "concurrently": "^8.2.0"
+  }
+}

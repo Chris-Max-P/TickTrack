@@ -1,0 +1,9 @@
+@import '@angular/material/theming';
+//@include mat-core();
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+  background-color: #2b2b2b;
+  color: #8faab2;
+}

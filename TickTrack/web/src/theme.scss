@@ -1,0 +1,105 @@
+$anthrazit-palette: (
+  50: #303C49,
+  100: #303C49,
+  200: #303C49,
+  300: #303C49,
+  400: #303C49,
+  500: #303C49,
+  600: #303C49,
+  700: #303C49,
+  800: #303C49,
+  900: #303C49,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(black, 0.87),
+  )
+);
+
+$red-palette: (
+  50: #E40045,
+  100: #E40045,
+  200: #E40045,
+  300: #E40045,
+  400: #E40045,
+  500: #E40045,
+  600: #E40045,
+  700: #E40045,
+  800: #E40045,
+  900: #E40045,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(black, 0.87),
+  )
+);
+
+$green-palette: (
+  50: #91B900,
+  100: #91B900,
+  200: #91B900,
+  300: #91B900,
+  400: #91B900,
+  500: #91B900,
+  600: #91B900,
+  700: #91B900,
+  800: #91B900,
+  900: #91B900,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(black, 0.87),
+  )
+);
+
+$yellow-palette: (
+  50: #FFCD00,
+  100: #FFCD00,
+  200: #FFCD00,
+  300: #FFCD00,
+  400: #FFCD00,
+  500: #FFCD00,
+  600: #FFCD00,
+  700: #FFCD00,
+  800: #FFCD00,
+  900: #FFCD00,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(black, 0.87),
+  )
+);
+
+$primary: mat-palette($anthrazit-palette, 500);
+$accent: mat-palette($green-palette, 500);
+$warn: mat-palette($red-palette, 500);
+
+$theme: mat-light-theme($primary, $accent, $warn);

@@ -1,1 +1,9 @@
-<p>history works!</p>
+<a [routerLink]="AppRoutes.Home">Home</a>
+
+<div>
+  <ul *ngFor="let timesPerProject of timesPerProjectHistory">
+    <li *ngFor="let project of timesPerProject | keyvalue">
+      {{project.key}}: {{trackService.getWorkedTimeString(project.value.worked)}} ___ {{project.value.comments}}
+    </li>
+  </ul>
+</div>

@@ -1,10 +1,11 @@
-import {Track} from "./src/track.model";
+import {Track} from "@data-logic/models/track.model";
 
 export interface IElectronAPI {
   closeApp: () => Promise<void>;
   log: (message: string, logLevel: LogLevel) => Promise<void>;
 
-  track: (data: Track) => Promise<void>;
+  trackTime: (data: Track) => Promise<void>;
+  readTrackedTimes: (date: Date) => Promise<Track[]>;
 }
 
 declare global {

@@ -1,2 +1,71 @@
-<mat-icon>home</mat-icon><h1>Home</h1>
+<main>
+
+  <button class="track-button" (click)="track()">
+    TRACK
+  </button>
+
+  <form [formGroup]="trackForm" class="inputs">
+    <div class="time-inputs">
+      <div>
+        <span>von: </span>
+        <input type="time" formControlName="start"> <!-- todo make a time input component of this -->
+      </div>
+
+      <div>
+        <span>bis: </span>
+        <button (click)="switchTrackUntilNow(true)">JETZT</button>
+        <button (click)="switchTrackUntilNow(false)">Zeit eingeben</button>
+      </div>
+      <input *ngIf="!doTrackUntilNow" type="time" formControlName="end">
+    </div>
+
+    <div class="input-and-label">
+      <label>Projekt:</label>
+      <input type="text"
+             formControlName="project"
+             [matAutocomplete]="auto"
+      >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let project of filteredProjects | async" [value]="project">{{project}}</mat-option>
+      </mat-autocomplete>
+    </div>
+
+    <div class="input-and-label">
+      <label>Kommentar:</label>
+      <textarea formControlName="comment" rows="5">
+      </textarea>
+    </div>
+  </form>
+
+  <div>
+    <p>worked today: {{workedToday}}</p>
+  </div>
+
+  <div>
+    <ul>
+      <li *ngFor="let project of timesPerProject | keyvalue">
+        {{project.key}}: {{trackService.getWorkedTimeString(project.value.worked)}} ___ {{project.value.comments}}
+      </li>
+    </ul>
+  </div>
+
+</main>
+
+<a [routerLink]="AppRoutes.History">History</a>
+
+<!--
+<div>
+  <h4>Pomodoro Mode</h4>
+  <button (click)="startPomodoro()" [disabled]="isStarted">Start</button>
+
+  <div>
+    <h6>
+      <a href="obsidian://open?vault=Obsidian&file=Life%20OS%2F%C3%9Cbungen%20zusammenschreiben%20und%20Routine%20aufbauen">
+        Übungen
+      </a>
+    </h6>
+  </div>
+</div>
+-->
+
 

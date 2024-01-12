@@ -1,9 +1,32 @@
-@import '@angular/material/theming';
-//@include mat-core();
+@use '@angular/material' as mat;
+@include mat.core();
 
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import '@angular/material/theming';
+@import 'material-design-icons/iconfont/material-icons.css';
+
+@import 'theme';
+@include angular-material-theme($theme);
+
+* {
+  font-family: Arial, sans-serif;
+}
 
 body {
-  background-color: #2b2b2b;
-  color: #8faab2;
+  // dark mode
+  --APP-BG-COL: #2b2b2b;
+  --APP-COLOR: #fff;
+
+  background-color: var(--APP-BG-COL);
+  color: var(--APP-COLOR);
+}
+
+
+body.light-mode {
+  --APP-BG-COL: #FFF;
+  --APP-COLOR: #000;
+
+  .logo {
+    filter: invert(1);
+  }
+
 }

@@ -1,6 +1,6 @@
 const commonEnvironment = {
     production: false,
-    defaultLang: 'de',
+    loggerPath: './logs',
 };
 
 module.exports = commonEnvironment;

@@ -3,6 +3,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@environments/*": ["./src/environments/*"],
+      "@global-components/*": ["./src/app/global-components/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@data-logic/*": ["./src/app/data-logic/*"],
+      "@app-logic/*": ["./src/app/app-logic/*"],
+    },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,

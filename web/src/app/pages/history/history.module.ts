@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HistoryComponent } from './history.component';
+import {RouterLink} from "@angular/router";
 
 
 
@@ -9,7 +10,8 @@ import { HistoryComponent } from './history.component';
     HistoryComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterLink
   ]
 })
 export class HistoryModule { }

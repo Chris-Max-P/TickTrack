@@ -1,6 +1,7 @@
 export class Track {
-  task?: string;
+  task?: string; //TODO
   comment?: string;
+  role?: string; // TODO
 
   constructor(public begin: Date,
               public end: Date,

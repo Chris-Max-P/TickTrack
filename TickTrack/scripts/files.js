@@ -4,6 +4,7 @@ const environment = require("../environments/environment");
 const dayjs = require("dayjs");
 
 let DATA_PATH = path.join(__dirname, '..', 'files');
+let PROJECTS_PATH = path.join(DATA_PATH, 'projects.json');
 if (!environment.production) DATA_PATH = path.join(__dirname, '..', 'files');
 function createDirectories() {
   if (!fs.existsSync(DATA_PATH)) fs.mkdirSync(DATA_PATH);
@@ -67,6 +68,7 @@ async function emptyDirectory(directory) {
 }
 
 
+
 function trackTime(trackModel) {
   let fileName = dayjs().format('YYYY-MM-DD') + '_track.json';
   let trackPath = path.join(DATA_PATH, fileName)
@@ -84,7 +86,45 @@ function readTrackedTimes(date) {
   return readJson(path.join(DATA_PATH, fileName));
 }
 
+
+
+function getProjects() {
+  return readJson(PROJECTS_PATH);
+}
+
+function addProject(project) {
+  let projects = getProjects();
+  if (!projects) projects = [];
+  projects.push(project);
+  writeJsonFile(PROJECTS_PATH, projects);
+}
+
+function deleteProject(projectName) {
+  let projects = getProjects();
+  if (!projects) return;
+  projects = projects?.filter(p => p.name !== projectName.name);
+  writeJsonFile(PROJECTS_PATH, projects);
+}
+
+function updateProject(projectName, project) {
+  let projects = getProjects();
+
+  projects = projects?.map(proj => {
+    if (proj.name === projectName) {
+      return project;
+    }
+    return proj;
+  });
+  writeJsonFile(PROJECTS_PATH, projects);
+}
+
+
+
 module.exports = {
   trackTime,
-  readTrackedTimes
+  readTrackedTimes,
+  getProjects,
+  addProject,
+  deleteProject,
+  updateProject,
 }

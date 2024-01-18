@@ -1,17 +1,16 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {Track} from "@data-logic/models/track.model";
 import {LoggerService} from "@app-logic/services/logger.service";
+import {ProjectService} from "@data-logic/services/project.service";
 
 @Injectable({providedIn: 'root'})
 export class TrackService {
-
-  projectsNotToTrack = ["mittag", "pause", "private", "", "test"]; //TODO
 
   begin = new Date();
 
   trackedTime$ = new EventEmitter<Track>();
 
-  constructor() {
+  constructor(private projectService: ProjectService) {
     this.initTracking();
   }
   initTracking() {
@@ -57,9 +56,11 @@ export class TrackService {
   async getWorkedOnDay(day: Date) {
     let dayTrackedTimes = await window.electronAPI.readTrackedTimes(day);
     let workedSeconds = 0;
+    let projectsToTrack = (await this.projectService.getProjects()).filter(p => p.isTracked).map(p => p.name);
+    console.log(projectsToTrack)
     if (dayTrackedTimes) {
       workedSeconds = dayTrackedTimes.reduce((acc, track) => {
-        if (!this.projectsNotToTrack.includes(track.project)) { // TODO can be simplified by using projectsToTrack array
+        if (projectsToTrack.includes(track.project)) {
           acc += track.workedSeconds;
         }
         return acc;

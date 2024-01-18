@@ -1,12 +1,13 @@
 module.exports = {
   packagerConfig: {
-    files: ['./web/dist/**/*'],
+    files: ['./dist/**/*'],
     ignore: [
       /^\/.github/,
       /^\/.idea/,
       /^\/web/,
       /^\/files/,
-      /^.gitignore/
+      /^.gitignore/,
+      /^\/logs/,
     ],
     icon: ''
   },

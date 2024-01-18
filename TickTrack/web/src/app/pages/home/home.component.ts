@@ -5,6 +5,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {AppRoutes} from "@app-logic/enums/app-routes.enum";
 import {TrackService} from "@data-logic/services/track.service";
 import {DatePipe} from "@angular/common";
+import {ProjectService} from "@data-logic/services/project.service";
+import {LoggerService} from "@app-logic/services/logger.service";
+import {Project} from "@data-logic/models/project.model";
 
 @Component({
   selector: 'home',
@@ -12,7 +15,8 @@ import {DatePipe} from "@angular/common";
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
-  projectOptions = ["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
+  projects: Project[] = [];
+  projectOptions: string[] = []; //["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
 
   timesPerProject: Map<string, {worked: number, comments: string}> = new Map<string, {worked: number, comments: string}>();
 
@@ -31,7 +35,8 @@ export class HomeComponent {
   });
 
   constructor(public trackService: TrackService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private projectService: ProjectService) {
   }
 
   ngOnInit() {
@@ -50,9 +55,19 @@ export class HomeComponent {
     this.trackService.getWorkedInProjectsOnDay(new Date()).then((timesPerProject) => {
       this.timesPerProject = timesPerProject;
     });
+
+    //TODO avoid duplicate call: run getProjects on subscribe
+    this.getProjects();
+    this.projectService.newProjectAdded$.subscribe(() => {
+      this.getProjects();
+    });
   }
 
   track() {
+    if (!this.projectOptions.includes(this.trackForm.get('project')?.value)) {
+      this.projectService.addProject(this.trackForm.get('project')?.value);
+    }
+
     this.trackService.trackTime( //TODO variable start date by user input
       this.trackForm.get('project')?.value || '',
       this.trackForm.get('end')?.value ? this.dateFromTime(this.trackForm.get('end')?.value) : new Date(),
@@ -89,6 +104,22 @@ export class HomeComponent {
     const hours = Math.floor(minutes / 60);
 
     return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  getProjects() {
+    this.projectService.getProjects().then((projects) => {
+      LoggerService.debug("Read projects from disk", projects);
+      if (!projects) projects = [];
+      this.projects = projects;
+      this.projectOptions = projects.map((project) => project.name);
+    });
+  }
+
+  updateProjectTrackingStatus(project: Project, event: any) {
+    project.isTracked = event.target.checked;
+    this.projectService.updateProject(project.name, project).then(() => {
+      LoggerService.debug("Updated project tracking status", project);
+    });
   }
 
 

@@ -53,6 +53,7 @@
 
 <a [routerLink]="AppRoutes.History">History</a>
 
+<br>
 <!--
 <div>
   <h4>Pomodoro Mode</h4>
@@ -68,4 +69,10 @@
 </div>
 -->
 
+<div>
+  <div *ngFor="let project of projects">
+    <span>{{project.name}}</span>
+    <input (change)="updateProjectTrackingStatus(project, $event)" type="checkbox" [checked]="project.isTracked">
+  </div>
+</div>
 

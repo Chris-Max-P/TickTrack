@@ -18,8 +18,6 @@ export class TrackService {
     // if (this.trackedTimes.length > 0) this.start = this.trackedTimes[this.trackedTimes.length - 1]?.end;
     // this.begin = new Date();
     LoggerService.debug("Init tracking with start:", this.begin);
-
-
   }
 
   getSecondsBetween(start: Date, end: Date) {

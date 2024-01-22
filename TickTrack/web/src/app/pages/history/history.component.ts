@@ -11,15 +11,26 @@ import {DateService} from "@app-logic/services/date.service";
 export class HistoryComponent {
   protected readonly AppRoutes = AppRoutes;
 
+  weekday = new Date();
   timesPerProjectHistory: Map<string, {worked: number, comments: string}>[] = [];
 
   constructor(public trackService: TrackService,
               private dateService: DateService) {
-    for (let workday of this.dateService.getWorkDaysOfCurrentWeek()) {
+    this.getWorkedTimes();
+  }
+
+  getWorkedTimes() {
+    this.timesPerProjectHistory = [];
+    for (let workday of this.dateService.getWorkDaysOfWeek(this.weekday)) {
       this.trackService.getWorkedInProjectsOnDay(workday).then((timesPerProject) => {
         this.timesPerProjectHistory.push(timesPerProject);
       });
     }
+  }
 
+  changeWeek(changeByWeeks: number) {
+    let changeBy = changeByWeeks * 7;
+    this.weekday.setDate(this.weekday.getDate() + changeBy);
+    this.getWorkedTimes();
   }
 }

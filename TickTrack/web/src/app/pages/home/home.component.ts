@@ -15,7 +15,6 @@ import {Project} from "@data-logic/models/project.model";
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
-  projects: Project[] = [];
   projectOptions: string[] = []; //["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
 
   timesPerProject: Map<string, {worked: number, comments: string}> = new Map<string, {worked: number, comments: string}>();
@@ -110,15 +109,7 @@ export class HomeComponent {
     this.projectService.getProjects().then((projects) => {
       LoggerService.debug("Read projects from disk", projects);
       if (!projects) projects = [];
-      this.projects = projects;
       this.projectOptions = projects.map((project) => project.name);
-    });
-  }
-
-  updateProjectTrackingStatus(project: Project, event: any) {
-    project.isTracked = event.target.checked;
-    this.projectService.updateProject(project.name, project).then(() => {
-      LoggerService.debug("Updated project tracking status", project);
     });
   }
 

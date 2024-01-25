@@ -51,9 +51,11 @@
 
 </main>
 
-<a [routerLink]="AppRoutes.History">History</a>
+<nav style="display: flex; gap: 1em;">
+  <a [routerLink]="AppRoutes.History">History</a>
+  <a [routerLink]="AppRoutes.Projects">Projects</a>
+</nav>
 
-<br>
 <!--
 <div>
   <h4>Pomodoro Mode</h4>
@@ -69,10 +71,5 @@
 </div>
 -->
 
-<div>
-  <div *ngFor="let project of projects">
-    <span>{{project.name}}</span>
-    <input (change)="updateProjectTrackingStatus(project, $event)" type="checkbox" [checked]="project.isTracked">
-  </div>
-</div>
+
 

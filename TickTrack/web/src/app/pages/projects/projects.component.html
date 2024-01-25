@@ -1,0 +1,8 @@
+<a [routerLink]="AppRoutes.Home">Home</a>
+
+<div>
+  <div *ngFor="let project of projects">
+    <span>{{project.name}}</span>
+    <input (change)="updateProjectTrackingStatus(project, $event)" type="checkbox" [checked]="project.isTracked">
+  </div>
+</div>

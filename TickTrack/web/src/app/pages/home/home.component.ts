@@ -22,7 +22,6 @@ export class HomeComponent {
   // projectControl = new FormControl('')
 
   workedToday: string = "";
-  doTrackUntilNow = true;
 
   protected readonly AppRoutes = AppRoutes;
 
@@ -31,6 +30,7 @@ export class HomeComponent {
     end: new FormControl(null),
     project: new FormControl(''),
     comment: new FormControl(''),
+    doTrackUntilNow: new FormControl(true),
   });
 
   constructor(public trackService: TrackService,
@@ -39,9 +39,9 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-
     this.trackService.trackedTime$.subscribe((track: Track) => {
       this.trackForm.get('comment')!.setValue('');
+      this.trackForm.get('start')!.setValue(this.datePipe.transform(this.trackService.begin, 'HH:mm'));
       this.trackForm.get('end')!.setValue(null);
     });
 
@@ -67,9 +67,10 @@ export class HomeComponent {
       this.projectService.addProject(this.trackForm.get('project')?.value);
     }
 
-    this.trackService.trackTime( //TODO variable start date by user input
+    this.trackService.trackTime(
       this.trackForm.get('project')?.value || '',
-      this.trackForm.get('end')?.value ? this.dateFromTime(this.trackForm.get('end')?.value) : new Date(),
+      this.trackForm.get('start')?.value ? this.dateFromTime(this.trackForm.get('start')?.value) : null,
+      this.getEnd(),
       this.trackForm.get('comment')?.value);
     this.getWorkedToday();
     this.trackService.getWorkedInProjectsOnDay(new Date()).then((timesPerProject) => {
@@ -77,14 +78,14 @@ export class HomeComponent {
     });
   }
 
-  switchTrackUntilNow(doTrackUntilNow: boolean) {
-    this.doTrackUntilNow = doTrackUntilNow;
-    if (doTrackUntilNow) {
-      this.trackForm.get('end')?.setValue(null);
+  getEnd() {
+    let end;
+    if (this.trackForm.get('doTrackUntilNow')!.value) {
+      end = new Date();
     } else {
-      this.trackForm.get('end')?.setValue(new Date());
+      end = this.trackForm.get('end')?.value ? this.dateFromTime(this.trackForm.get('end')?.value) : new Date();
     }
-
+    return end;
   }
 
   dateFromTime(time: string) {
@@ -111,6 +112,10 @@ export class HomeComponent {
       if (!projects) projects = [];
       this.projectOptions = projects.map((project) => project.name);
     });
+  }
+
+  getDoTrackUntilNow() {
+    return this.trackForm.get('doTrackUntilNow')!.value;
   }
 
 

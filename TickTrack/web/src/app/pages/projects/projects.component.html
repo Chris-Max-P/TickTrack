@@ -1,5 +1,8 @@
-<a [routerLink]="AppRoutes.Home">Home</a>
+<nav>
+  <a [routerLink]="AppRoutes.Home">Home</a>
+</nav>
 
+<h4>Track projects?</h4>
 <div>
   <div *ngFor="let project of projects">
     <span>{{project.name}}</span>

@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {RouterLink} from "@angular/router";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {RouterLink} from "@angular/router";
     MatSelectModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
-    RouterLink
+    RouterLink,
+    MatSlideToggleModule
   ]
 })
 export class HomeModule { }

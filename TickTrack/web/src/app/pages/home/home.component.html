@@ -1,5 +1,9 @@
-<main>
+<nav style="display: flex; gap: 1em;">
+  <a [routerLink]="AppRoutes.History">History</a>
+  <a [routerLink]="AppRoutes.Projects">Projects</a>
+</nav>
 
+<main>
   <button class="track-button" (click)="track()">
     TRACK
   </button>
@@ -8,15 +12,18 @@
     <div class="time-inputs">
       <div>
         <span>von: </span>
-        <input type="time" formControlName="start"> <!-- todo make a time input component of this -->
+        <input type="time" formControlName="start">
       </div>
 
       <div>
         <span>bis: </span>
-        <button (click)="switchTrackUntilNow(true)">JETZT</button>
-        <button (click)="switchTrackUntilNow(false)">Zeit eingeben</button>
+        <span>
+          <input type="time" formControlName="end">
+          <mat-slide-toggle formControlName="doTrackUntilNow"></mat-slide-toggle>
+          <span>JETZT</span>
+        </span>
       </div>
-      <input *ngIf="!doTrackUntilNow" type="time" formControlName="end">
+
     </div>
 
     <div class="input-and-label">
@@ -50,11 +57,6 @@
   </div>
 
 </main>
-
-<nav style="display: flex; gap: 1em;">
-  <a [routerLink]="AppRoutes.History">History</a>
-  <a [routerLink]="AppRoutes.Projects">Projects</a>
-</nav>
 
 <!--
 <div>

@@ -28,7 +28,9 @@ export class TrackService {
     return seconds;
   }
 
-  trackTime(project: string, end: Date, comment?: string) {
+  trackTime(project: string, start: Date | null, end: Date, comment?: string) {
+    console.debug("Tracking with", project, start, end, comment);
+    this.begin = start ? start : this.begin;
     let track: Track = new Track(
       this.begin,
       end,
@@ -40,8 +42,8 @@ export class TrackService {
     window.electronAPI.trackTime(track).then(
       () => {
         LoggerService.debug("Tracked time", track);
+        this.begin = new Date();
         this.trackedTime$.emit(track);
-        this.begin = end;
         LoggerService.debug("New tracking begin:", this.begin);
       },
       (error) => {

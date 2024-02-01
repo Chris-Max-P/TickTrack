@@ -17,6 +17,7 @@ import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { ProjectsComponent } from './pages/projects/projects.component';
 
 registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 

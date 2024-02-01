@@ -1,6 +1,6 @@
 const http = require("http");
 
-const waitForAngularDevServer = (url, retries = 15, delay = 2000) => {
+const waitForAngularDevServer = (url, retries = 15, delay = 4000) => {
   return new Promise((resolve, reject) => {
     const tryConnecting = (attemptsRemaining) => {
       const request = http.get(url, (response) => {

@@ -1,17 +1,16 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import {Track} from "@data-logic/models/track.model";
 import {LoggerService} from "@app-logic/services/logger.service";
+import {ProjectService} from "@data-logic/services/project.service";
 
 @Injectable({providedIn: 'root'})
 export class TrackService {
-
-  projectsNotToTrack = ["mittag", "pause", "private", "", "test"]; //TODO
 
   begin = new Date();
 
   trackedTime$ = new EventEmitter<Track>();
 
-  constructor() {
+  constructor(private projectService: ProjectService) {
     this.initTracking();
   }
   initTracking() {
@@ -19,8 +18,6 @@ export class TrackService {
     // if (this.trackedTimes.length > 0) this.start = this.trackedTimes[this.trackedTimes.length - 1]?.end;
     // this.begin = new Date();
     LoggerService.debug("Init tracking with start:", this.begin);
-
-
   }
 
   getSecondsBetween(start: Date, end: Date) {
@@ -31,7 +28,9 @@ export class TrackService {
     return seconds;
   }
 
-  trackTime(project: string, end: Date, comment?: string) {
+  trackTime(project: string, start: Date | null, end: Date, comment?: string) {
+    console.debug("Tracking with", project, start, end, comment);
+    this.begin = start ? start : this.begin;
     let track: Track = new Track(
       this.begin,
       end,
@@ -43,8 +42,8 @@ export class TrackService {
     window.electronAPI.trackTime(track).then(
       () => {
         LoggerService.debug("Tracked time", track);
+        this.begin = new Date();
         this.trackedTime$.emit(track);
-        this.begin = end;
         LoggerService.debug("New tracking begin:", this.begin);
       },
       (error) => {
@@ -57,9 +56,11 @@ export class TrackService {
   async getWorkedOnDay(day: Date) {
     let dayTrackedTimes = await window.electronAPI.readTrackedTimes(day);
     let workedSeconds = 0;
+    let projectsToTrack = (await this.projectService.getProjects()).filter(p => p.isTracked).map(p => p.name);
+    LoggerService.debug("Projects to track", projectsToTrack);
     if (dayTrackedTimes) {
       workedSeconds = dayTrackedTimes.reduce((acc, track) => {
-        if (!this.projectsNotToTrack.includes(track.project)) { // TODO can be simplified by using projectsToTrack array
+        if (projectsToTrack.includes(track.project)) {
           acc += track.workedSeconds;
         }
         return acc;

@@ -5,6 +5,9 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {AppRoutes} from "@app-logic/enums/app-routes.enum";
 import {TrackService} from "@data-logic/services/track.service";
 import {DatePipe} from "@angular/common";
+import {ProjectService} from "@data-logic/services/project.service";
+import {LoggerService} from "@app-logic/services/logger.service";
+import {Project} from "@data-logic/models/project.model";
 
 @Component({
   selector: 'home',
@@ -12,14 +15,13 @@ import {DatePipe} from "@angular/common";
   styleUrls: ['home.component.scss']
 })
 export class HomeComponent {
-  projectOptions = ["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
+  projectOptions: string[] = []; //["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
 
   timesPerProject: Map<string, {worked: number, comments: string}> = new Map<string, {worked: number, comments: string}>();
 
   // projectControl = new FormControl('')
 
   workedToday: string = "";
-  doTrackUntilNow = true;
 
   protected readonly AppRoutes = AppRoutes;
 
@@ -28,16 +30,18 @@ export class HomeComponent {
     end: new FormControl(null),
     project: new FormControl(''),
     comment: new FormControl(''),
+    doTrackUntilNow: new FormControl(true),
   });
 
   constructor(public trackService: TrackService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private projectService: ProjectService) {
   }
 
   ngOnInit() {
-
     this.trackService.trackedTime$.subscribe((track: Track) => {
       this.trackForm.get('comment')!.setValue('');
+      this.trackForm.get('start')!.setValue(this.datePipe.transform(this.trackService.begin, 'HH:mm'));
       this.trackForm.get('end')!.setValue(null);
     });
 
@@ -50,12 +54,23 @@ export class HomeComponent {
     this.trackService.getWorkedInProjectsOnDay(new Date()).then((timesPerProject) => {
       this.timesPerProject = timesPerProject;
     });
+
+    //TODO avoid duplicate call: run getProjects on subscribe
+    this.getProjects();
+    this.projectService.newProjectAdded$.subscribe(() => {
+      this.getProjects();
+    });
   }
 
   track() {
-    this.trackService.trackTime( //TODO variable start date by user input
+    if (!this.projectOptions.includes(this.trackForm.get('project')?.value)) {
+      this.projectService.addProject(this.trackForm.get('project')?.value);
+    }
+
+    this.trackService.trackTime(
       this.trackForm.get('project')?.value || '',
-      this.trackForm.get('end')?.value ? this.dateFromTime(this.trackForm.get('end')?.value) : new Date(),
+      this.trackForm.get('start')?.value ? this.dateFromTime(this.trackForm.get('start')?.value) : null,
+      this.getEnd(),
       this.trackForm.get('comment')?.value);
     this.getWorkedToday();
     this.trackService.getWorkedInProjectsOnDay(new Date()).then((timesPerProject) => {
@@ -63,14 +78,14 @@ export class HomeComponent {
     });
   }
 
-  switchTrackUntilNow(doTrackUntilNow: boolean) {
-    this.doTrackUntilNow = doTrackUntilNow;
-    if (doTrackUntilNow) {
-      this.trackForm.get('end')?.setValue(null);
+  getEnd() {
+    let end;
+    if (this.trackForm.get('doTrackUntilNow')!.value) {
+      end = new Date();
     } else {
-      this.trackForm.get('end')?.setValue(new Date());
+      end = this.trackForm.get('end')?.value ? this.dateFromTime(this.trackForm.get('end')?.value) : new Date();
     }
-
+    return end;
   }
 
   dateFromTime(time: string) {
@@ -89,6 +104,18 @@ export class HomeComponent {
     const hours = Math.floor(minutes / 60);
 
     return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  getProjects() {
+    this.projectService.getProjects().then((projects) => {
+      LoggerService.debug("Read projects from disk", projects);
+      if (!projects) projects = [];
+      this.projectOptions = projects.map((project) => project.name);
+    });
+  }
+
+  getDoTrackUntilNow() {
+    return this.trackForm.get('doTrackUntilNow')!.value;
   }
 
 

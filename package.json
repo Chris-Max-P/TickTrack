@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd web && npm run test",
     "app": "electron .",
     "build-ng": "cd web && npm run build",
     "ng-dev": "cd web && npm run start",

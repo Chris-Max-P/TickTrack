@@ -1,5 +1,9 @@
-<a [routerLink]="AppRoutes.Home">Home</a>
+<nav>
+  <a [routerLink]="AppRoutes.Home">Home</a>
+</nav>
 
+<button (click)="changeWeek(-1)">zurück</button>
+<button (click)="changeWeek(1)">vorwärts</button>
 <div>
   <ul *ngFor="let timesPerProject of timesPerProjectHistory">
     <li *ngFor="let project of timesPerProject | keyvalue">

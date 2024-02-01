@@ -11,7 +11,7 @@ export class ProjectService {
     }
 
     async getProjects() {
-      return await window.electronAPI.getProjects();
+      return await window.electronAPI.getProjects() || [];
     }
 
     async addProject(project: string) {

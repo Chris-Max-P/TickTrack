@@ -57,7 +57,7 @@ export class TrackService {
     let dayTrackedTimes = await window.electronAPI.readTrackedTimes(day);
     let workedSeconds = 0;
     let projectsToTrack = (await this.projectService.getProjects()).filter(p => p.isTracked).map(p => p.name);
-    console.log(projectsToTrack)
+    LoggerService.debug("Projects to track", projectsToTrack);
     if (dayTrackedTimes) {
       workedSeconds = dayTrackedTimes.reduce((acc, track) => {
         if (projectsToTrack.includes(track.project)) {

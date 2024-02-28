@@ -3,7 +3,9 @@ const {join} = require("path");
 const fs = require("fs");
 const {environment} = require("../environments/environment");
 const path = require("path");
-const LOG_PATH = environment.loggerPath;
+const {homedir} = require("os");
+let LOG_PATH = path.join(homedir(), 'AppData', 'Roaming', 'ticktrack-app', 'logs');
+if (!environment.production) LOG_PATH = path.join(__dirname, '..', 'logs');
 
 try {
     if (!fs.existsSync(LOG_PATH)) fs.mkdirSync(LOG_PATH);

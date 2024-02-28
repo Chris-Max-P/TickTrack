@@ -1,9 +1,10 @@
 const path = require('path');
 const fs = require('fs');
-const environment = require("../environments/environment");
+const {environment} = require("../environments/environment");
 const dayjs = require("dayjs");
+const {homedir} = require("os");
 
-let DATA_PATH = path.join(__dirname, '..', 'files');
+let DATA_PATH = path.join(homedir(), 'AppData', 'Roaming', 'ticktrack-app', 'files');
 let PROJECTS_PATH = path.join(DATA_PATH, 'projects.json');
 if (!environment.production) DATA_PATH = path.join(__dirname, '..', 'files');
 function createDirectories() {

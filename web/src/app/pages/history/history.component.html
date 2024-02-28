@@ -5,9 +5,12 @@
 <button (click)="changeWeek(-1)">zurück</button>
 <button (click)="changeWeek(1)">vorwärts</button>
 <div>
-  <ul *ngFor="let timesPerProject of timesPerProjectHistory">
-    <li *ngFor="let project of timesPerProject | keyvalue">
-      {{project.key}}: {{trackService.getWorkedTimeString(project.value.worked)}} ___ {{project.value.comments}}
+  <ul *ngFor="let timesPerDay of timesPerDays">
+    <p class="day-info">
+      {{timesPerDay.totalHours}} worked on {{timesPerDay.date | date:'dd.MM.yyyy'}}:
+    </p>
+    <li *ngFor="let timesPerProject of timesPerDay.timesPerProject">
+      {{timesPerProject.project}}: {{trackService.getWorkedTimeString(timesPerProject.worked)}} ___ {{timesPerProject.comments}}
     </li>
   </ul>
 </div>

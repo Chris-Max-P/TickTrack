@@ -8,6 +8,7 @@ import {DatePipe} from "@angular/common";
 import {ProjectService} from "@data-logic/services/project.service";
 import {LoggerService} from "@app-logic/services/logger.service";
 import {Project} from "@data-logic/models/project.model";
+import {TimesPerProject} from "@data-logic/models/times-per-project.model";
 
 @Component({
   selector: 'home',
@@ -17,7 +18,7 @@ import {Project} from "@data-logic/models/project.model";
 export class HomeComponent {
   projectOptions: string[] = []; //["f-app", "p-hub", "nature", "BITS", "lernen"]; //TODO
 
-  timesPerProject: Map<string, {worked: number, comments: string}> = new Map<string, {worked: number, comments: string}>();
+  timesPerProject: TimesPerProject[] = [];
 
   // projectControl = new FormControl('')
 
